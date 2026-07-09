@@ -50,3 +50,21 @@ FROM Customers c
 JOIN Orders o
     ON c.CustomerID = o.CustomerID
 GROUP BY c.CustomerID, c.Name;
+
+/*
+Business Requirement:
+Need all customers, even those without orders.
+Use LEFT JOIN because it keeps all customers from the left table and shows NULL for customers without matching orders.
+*/
+
+SELECT c.Name,
+       COUNT(o.OrderID) AS number_of_orders,
+       CASE
+           WHEN COUNT(o.OrderID) >= 3 THEN 'Active'
+           WHEN COUNT(o.OrderID) >= 1 THEN 'Occasional'
+           ELSE 'Inactive'
+       END AS Customer_Activity_Level
+FROM Customers c
+LEFT JOIN Orders o
+    ON c.CustomerID = o.CustomerID
+GROUP BY c.CustomerID, c.Name;
