@@ -29,3 +29,24 @@ JOIN Orders o
     ON c.CustomerID = o.CustomerID
 GROUP BY c.CustomerID, c.Name
 ORDER BY amount_spent DESC;
+
+SELECT OrderID,
+       Amount,
+       CASE
+           WHEN Amount >= 200 THEN 'High Value'
+           WHEN Amount >= 100 THEN 'Medium Value'
+           ELSE 'Low Value'
+       END AS Order_Category
+FROM Orders;
+
+SELECT c.Name,
+       SUM(o.Amount) AS total_spending,
+       CASE
+           WHEN SUM(o.Amount) >= 200 THEN 'Gold'
+           WHEN SUM(o.Amount) >= 100 THEN 'Silver'
+           ELSE 'Bronze'
+       END AS customer_level
+FROM Customers c
+JOIN Orders o
+    ON c.CustomerID = o.CustomerID
+GROUP BY c.CustomerID, c.Name;
